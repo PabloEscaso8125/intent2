@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Ruta del Tapeo - Bares de Sevilla</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        albero: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            500: '#d97706',
+                            600: '#ca8a04',
+                            700: '#b45309',
+                        },
+                        terracota: {
+                            500: '#c2410c',
+                            600: '#9a3412',
+                            700: '#7c2d12',
+                        },
+                        azulejo: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            700: '#0369a1',
+                            900: '#0c4a6e',
+                        },
+                        cal: '#fafaf9'
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Patrón de Azulejo Sevillano en SVG CSS */
+        .bg-azulejo-pattern {
+            background-color: #0c4a6e;
+            background-image: radial-gradient(#ca8a04 0.75px, transparent 0.75px), radial-gradient(#ca8a04 0.75px, #0c4a6e 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+        }
+        
+        /* Ocultar scrollbar pero mantener scroll */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(180deg, rgba(12, 74, 110, 0.85) 0%, rgba(124, 45, 18, 0.75) 100%);
+        }
+    </style>
+</head>
+<body class="bg-cal text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- HEADER & NAVBAR -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-amber-100 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo & Título -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="resetFilters()">
+                    <div class="w-11 h-11 rounded-full bg-gradient-to-br from-albero-600 to-terracota-600 flex items-center justify-center text-white shadow-md transform hover:rotate-12 transition-transform">
+                        <i class="fa-solid font-bold fa-wine-glass text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-serif font-bold text-xl sm:text-2xl text-azulejo-900 leading-tight">La Ruta del Tapeo</h1>
+                        <p class="text-xs text-terracota-600 font-semibold tracking-wider uppercase">Bares & Tabernas de Sevilla</p>
+                    </div>
+                </div>
+
+                <!-- Botones Acciones -->
+                <div class="flex items-center space-x-3">
+                    <button id="btn-favoritos" onclick="toggleFilterFavorites()" class="relative inline-flex items-center px-4 py-2 rounded-full border border-rose-200 bg-rose-50 text-rose-700 hover:bg-rose-100 transition-colors font-medium text-sm shadow-sm">
+                        <i class="fa-solid fa-heart text-rose-500 mr-2"></i>
+                        <span>Favoritos</span>
+                        <span id="fav-counter" class="ml-2 bg-rose-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+                    </button>
+
+                    <a href="#guia-supervivencia" class="hidden md:inline-flex items-center px-4 py-2 rounded-full bg-azulejo-900 text-white hover:bg-azulejo-700 transition-colors font-medium text-sm shadow-sm">
+                        <i class="fa-solid fa-compass mr-2 text-albero-500"></i>
+                        <span>Guía Local</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="relative bg-azulejo-900 text-white overflow-hidden">
+        <div class="absolute inset-0 z-0 opacity-40 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1555881400-74d7acaacd8b?auto=format&fit=crop&w=1600&q=80');"></div>
+        <div class="absolute inset-0 hero-gradient z-0"></div>
+        
+        <!-- Adorno Azulejo Borde -->
+        <div class="absolute bottom-0 inset-x-0 h-2 bg-gradient-to-r from-albero-600 via-terracota-600 to-azulejo-500 z-10"></div>
+
+        <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 text-center">
+            <span class="inline-block px-4 py-1.5 rounded-full bg-albero-600/30 border border-albero-500/40 text-albero-100 text-xs sm:text-sm font-semibold tracking-wide uppercase mb-4 backdrop-blur-sm">
+                <i class="fa-solid fa-utensils mr-2"></i>Guía Gastronómica Sevillana
+            </span>
+            <h2 class="font-serif text-4xl sm:text-6xl font-extrabold tracking-tight text-white mb-6 leading-tight">
+                El arte del tapeo en la ciudad de la gracia
+            </h2>
+            <p class="text-lg sm:text-xl text-amber-100/90 max-w-3xl mx-auto mb-10 leading-relaxed font-light">
+                Descubre los rincones emblemáticos, las cañas mejor tiradas y las tapas imprescindibles de los mejores bares, abacerías y tabernas de Sevilla.
+            </p>
+
+            <!-- BARRA DE BÚSQUEDA -->
+            <div class="max-w-2xl mx-auto">
+                <div class="relative flex items-center shadow-2xl rounded-2xl overflow-hidden bg-white">
+                    <div class="pl-4 text-slate-400">
+                        <i class="fa-solid fa-magnifying-glass text-lg"></i>
+                    </div>
+                    <input type="text" id="search-input" onkeyup="filterBares()" placeholder="Busca por bar, tapa (ej: pringá, espinacas) o palabras clave..." class="w-full py-4 px-4 text-slate-800 placeholder-slate-400 focus:outline-none text-base sm:text-lg">
+                    <button onclick="clearSearch()" id="clear-search-btn" class="hidden pr-4 text-slate-400 hover:text-slate-600">
+                        <i class="fa-solid fa-circle-xmark text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ZONAS INTERACTIVAS (MAPA VISUAL) -->
+    <section class="py-10 bg-white border-b border-amber-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 text-center sm:text-left">Explora por Barrio / Zona</h3>
+            <div class="flex items-center space-x-3 overflow-x-auto pb-2 no-scrollbar" id="zona-filters">
+                <!-- Se generan por JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- FILTROS DE TIPO & ORDEN -->
+    <section class="py-6 bg-slate-50 sticky top-20 z-30 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                
+                <!-- Categorías de Bares -->
+                <div class="flex items-center space-x-2 overflow-x-auto pb-1 no-scrollbar" id="tipo-filters">
+                    <!-- Generado por JS -->
+                </div>
+
+                <!-- Contador y Reset -->
+                <div class="flex items-center justify-between md:justify-end space-x-4 border-t md:border-t-0 pt-3 md:pt-0 border-slate-200">
+                    <span id="counter-bares" class="text-sm font-semibold text-slate-600">Mostrando 0 bares</span>
+                    <button onclick="resetFilters()" class="text-xs text-terracota-600 font-semibold hover:text-terracota-700 flex items-center space-x-1">
+                        <i class="fa-solid fa-rotate-right"></i>
+                        <span>Limpiar Filtros</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LISTADO DE BARES -->
+    <main class="flex-grow py-12 bg-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div id="bares-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Las tarjetas de los bares se inyectan dinámicamente con JS -->
+            </div>
+
+            <!-- Estado Vacío (Sin Resultados) -->
+            <div id="empty-state" class="hidden text-center py-16 bg-white rounded-3xl shadow-sm border border-slate-200 p-8 my-8">
+                <div class="w-20 h-20 bg-amber-100 text-albero-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+                    <i class="fa-solid fa-beer-mug-empty"></i>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-slate-800 mb-2">No hemos encontrado ningún bar</h3>
+                <p class="text-slate-500 max-w-md mx-auto mb-6">No hay locales que coincidan con la búsqueda o filtros seleccionados. Prueba a cambiar los términos.</p>
+                <button onclick="resetFilters()" class="px-6 py-2.5 rounded-full bg-azulejo-900 text-white font-semibold hover:bg-azulejo-700 transition">Ver todos los bares</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- SECCIÓN: GUÍA DE SUPERVIVENCIA DEL TAPEO -->
+    <section id="guia-supervivencia" class="py-16 bg-azulejo-900 text-white relative overflow-hidden">
+        <!-- Fondo azulejo -->
+        <div class="absolute inset-0 bg-azulejo-pattern opacity-10"></div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-albero-500 text-sm font-bold uppercase tracking-widest">Consejos Locales</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-extrabold text-white mt-2">Guía de Supervivencia del Tapeo Sevillano</h2>
+                <p class="text-slate-300 mt-4 text-base">Ir de tapas en Sevilla no es solo comer, es una cultura social. Sigue estas reglas de oro para tapear como un auténtico hispalense.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Regla 1 -->
+                <div class="bg-azulejo-900/80 backdrop-blur border border-azulejo-700/60 rounded-2xl p-6 shadow-xl hover:border-albero-500 transition-colors">
+                    <div class="w-12 h-12 bg-albero-600/20 text-albero-500 rounded-xl flex items-center justify-center text-xl font-bold mb-4">
+                        <i class="fa-solid fa-beer-mug-empty"></i>
+                    </div>
+                    <h3 class="font-serif text-lg font-bold text-white mb-2">1. La Caña y la Cruzcampo</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        Pide siempre "una caña" o un "corto". La cerveza helada es sagrada. En Sevilla la reina es la Cruzcampo muy fría, recién tirada con dos dedos de espuma limpia.
+                    </p>
+                </div>
+
+                <!-- Regla 2 -->
+                <div class="bg-azulejo-900/80 backdrop-blur border border-azulejo-700/60 rounded-2xl p-6 shadow-xl hover:border-albero-500 transition-colors">
+                    <div class="w-12 h-12 bg-terracota-500/20 text-terracota-500 rounded-xl flex items-center justify-center text-xl font-bold mb-4">
+                        <i class="fa-solid fa-[# bread-slice] fa-bread-slice"></i>
+                    </div>
+                    <h3 class="font-serif text-lg font-bold text-white mb-2">2. Picos y Regañás</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        El pan crujiente es obligatorio. Acompaña cada tapa o ensaladilla con picos artesanos o regañás de ajonjolí. No te cortes en pedir más si se te acaban.
+                    </p>
+                </div>
+
+                <!-- Regla 3 -->
+                <div class="bg-azulejo-900/80 backdrop-blur border border-azulejo-700/60 rounded-2xl p-6 shadow-xl hover:border-albero-500 transition-colors">
+                    <div class="w-12 h-12 bg-emerald-500/20 text-emerald-400 rounded-xl flex items-center justify-center text-xl font-bold mb-4">
+                        <i class="fa-solid fa-person-walking-luggage"></i>
+                    </div>
+                    <h3 class="font-serif text-lg font-bold text-white mb-2">3. El Arte del Itinerario</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        No te apoltrones en un solo sitio. Lo habitual es tomar una o dos tapas y una caña por bar, y luego ir "de ronda" al siguiente local del barrio.
+                    </p>
+                </div>
+
+                <!-- Regla 4 -->
+                <div class="bg-azulejo-900/80 backdrop-blur border border-azulejo-700/60 rounded-2xl p-6 shadow-xl hover:border-albero-500 transition-colors">
+                    <div class="w-12 h-12 bg-sky-500/20 text-sky-400 rounded-xl flex items-center justify-center text-xl font-bold mb-4">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+                    <h3 class="font-serif text-lg font-bold text-white mb-2">4. Horarios y Barra</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        El almuerzo es de 14:00 a 16:00 y la cena de 21:00 a 23:30. Si quieres ambiente auténtico y rapidez, come de pie directamente en la barra.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-6">
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 rounded-full bg-albero-600 flex items-center justify-center text-white">
+                    <i class="fa-solid fa-wine-glass text-base"></i>
+                </div>
+                <div>
+                    <span class="font-serif font-bold text-white text-lg">La Ruta del Tapeo</span>
+                    <p class="text-xs text-slate-500">Guía independiente de recomendación de bares en Sevilla.</p>
+                </div>
+            </div>
+
+            <div class="text-xs text-slate-500 text-center sm:text-right">
+                <p>Hecho con <i class="fa-solid fa-heart text-terracota-500"></i> para sevillanos y visitantes.</p>
+                <p class="mt-1">Diseñado listo para desplegar libremente en <strong>GitHub Pages</strong>.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL DETALLE DE BAR -->
+    <div id="bar-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 transition-opacity duration-300">
+        <div class="bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl transform transition-all relative my-8">
+            
+            <!-- Botón Cerrar -->
+            <button onclick="closeModal()" class="absolute top-4 right-4 z-20 w-10 h-10 bg-black/40 hover:bg-black/60 text-white rounded-full flex items-center justify-center transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <!-- Imagen Cabecera Modal -->
+            <div class="relative h-64 sm:h-72 w-full bg-slate-800">
+                <img id="modal-img" src="" alt="" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div class="absolute bottom-4 left-6 right-6">
+                    <div class="flex items-center space-x-2 mb-1">
+                        <span id="modal-zona" class="px-3 py-1 bg-albero-600 text-white font-bold text-xs rounded-full uppercase tracking-wider"></span>
+                        <span id="modal-tipo" class="px-3 py-1 bg-azulejo-900/90 text-amber-200 font-semibold text-xs rounded-full"></span>
+                    </div>
+                    <h3 id="modal-title" class="font-serif text-3xl font-extrabold text-white"></h3>
+                </div>
+            </div>
+
+            <!-- Contenido Modal -->
+            <div class="p-6 sm:p-8 space-y-6 max-h-[60vh] overflow-y-auto">
+                
+                <!-- Dirección & Precio -->
+                <div class="flex flex-wrap items-center justify-between text-sm text-slate-600 gap-2 border-b border-slate-100 pb-4">
+                    <div class="flex items-center text-slate-700">
+                        <i class="fa-solid fa-location-dot text-terracota-500 mr-2 text-base"></i>
+                        <span id="modal-direccion" class="font-medium"></span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <span id="modal-precio" class="font-bold text-emerald-700 text-base"></span>
+                        <span class="text-slate-300">•</span>
+                        <div id="modal-rating" class="flex text-amber-500 text-sm"></div>
+                    </div>
+                </div>
+
+                <!-- Descripción -->
+                <div>
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Sobre este templo gastronómico</h4>
+                    <p id="modal-descripcion" class="text-slate-700 leading-relaxed text-sm sm:text-base"></p>
+                </div>
+
+                <!-- TAPAS IMPERDEBLES -->
+                <div class="bg-amber-50/70 border border-amber-200/80 rounded-2xl p-5">
+                    <h4 class="font-serif text-amber-900 font-bold text-lg mb-3 flex items-center">
+                        <i class="fa-solid fa-utensils text-albero-600 mr-2.5"></i>
+                        ¿Qué pedir obligatoriamente? (Tapas Estrella)
+                    </h4>
+                    <ul id="modal-tapas" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-slate-800">
+                        <!-- Inyectado por JS -->
+                    </ul>
+                </div>
+
+                <!-- CONSEJO LOCAL -->
+                <div class="bg-azulejo-50 border border-azulejo-100 rounded-2xl p-5">
+                    <h4 class="font-serif text-azulejo-900 font-bold text-base mb-2 flex items-center">
+                        <i class="fa-solid fa-lightbulb text-azulejo-500 mr-2"></i>
+                        Consejo de sevillano
+                    </h4>
+                    <p id="modal-consejo" class="text-xs sm:text-sm text-azulejo-900 leading-relaxed italic"></p>
+                </div>
+
+                <!-- Etiquetas -->
+                <div>
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Destacados</h4>
+                    <div id="modal-tags" class="flex flex-wrap gap-2"></div>
+                </div>
+
+            </div>
+
+            <!-- Footer Modal -->
+            <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+                <button id="modal-fav-btn" onclick="" class="px-5 py-2.5 rounded-full border border-rose-300 text-rose-700 font-medium text-sm flex items-center hover:bg-rose-50 transition">
+                    <i class="fa-regular fa-heart mr-2"></i>Guardar en Favoritos
+                </button>
+                <button onclick="closeModal()" class="px-6 py-2.5 rounded-full bg-slate-800 text-white font-semibold text-sm hover:bg-slate-900 transition">
+                    Cerrar
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT & LOGIC -->
+    <script>
+        // BASE DE DATOS DE BARES DE SEVILLA
+        const BARES_DATA = [
+            {
+                id: 'el-rinconcillo',
+                nombre: 'El Rinconcillo',
+                zona: 'Santa Cruz',
+                tipo: 'Tapeo Tradicional',
+                precio: '$',
+                rating: 4.8,
+                direccion: 'Calle Gerona, 40 (Zona Centro/Santa Cruz)',
+                imagen: 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=800&q=80',
+                tapasEstrella: ['Espinacas con garbanzos', 'Pavía de bacalao', 'Jamón ibérico de bellota', 'Chacinas variadas'],
+                tags: ['Fundado en 1670', 'Cruzcampo bien tirada', 'Cuenta a tiza', 'Historia viva'],
+                descripcion: 'Fundado en 1670, es el bar más antiguo de Sevilla. Sus paredes cubiertas de azulejos sevillanos tradicionales y sus jamones colgando del techo te transportan al siglo XVII. Los camareros apuntan la cuenta con tiza sobre la barra de madera.',
+                consejo: 'Llega 15 minutos antes de la hora de apertura para coger sitio en la barra principal del piso de abajo.'
+            },
+            {
+                id: 'casa-morales',
+                nombre: 'Casa Morales',
+                zona: 'El Arenal',
+                tipo: 'Abacerías',
+                precio: '$',
+                rating: 4.7,
+                direccion: 'Calle García de Vinuesa, 11',
+                imagen: 'https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&w=800&q=80',
+                tapasEstrella: ['Montadito de pringá', 'Guiso de carrillada', 'Queso payoyo', 'Bacalao en aceite'],
+                tags: ['Tinajas de vino', 'Abacería histórica', 'Montaditos', 'Cerca de la Catedral'],
+                descripcion: 'La segunda taberna más antigua de la ciudad (1850). Famosa por sus enormes tinajas de vino empotradas en las paredes donde antiguamente se guardaba el vino a granel. Ambiente de abacería de toda la vida.',
+                consejo: 'Pasa a la parte trasera entre las tinajas gigantes para pedir el famoso montadito de pringá casera caliente.'
+            },
+            {
+                id: 'las-columnas',
+                nombre: 'Bodega Santa Cruz (Las Columnas)',
+                zona: 'Santa Cruz',
+                tipo: 'Tapeo Tradicional',
+                precio: '$',
+                rating: 4.6,
+                direccion: 'Calle Rodrigo Caro, 1',
+                imagen: 'https://images.unsplash.com/photo-1528823872057-9c018a7a70b3?auto=format&fit=crop&w=800&q=80',
+                tapasEstrella: ['Solomillo al whisky', 'Montadito de pringá', 'Tortilla de patatas', 'Cazón en adobo'],
+                tags: ['Solomillo al whisky', 'Muy concurrido', 'Terraza', 'Ambiente bullicioso'],
+                descripcion: 'Situado en pleno Barrio de Santa Cruz a unos pasos de la Giralda. Siempre está hasta arriba de locales y visitantes comiendo de pie en la calle junto a las emblemáticas columnas de entrada.',
+                consejo: 'Pide en la barra tu bebida y tus tapas con voz clara; los camareros cantan las comandas de memoria con un arte único.'
+            },
+            {
+                id: 'bar-blanco-cerrillo',
+                nombre: 'Blanco Cerrillo',
+                zona: 'Santa Cruz',
+                tipo: 'Cervecerías',
+                precio: '$',
+                rating: 4.7,
+                direccion: 'Calle José de Velilla, 1 (Centro)',
+                imagen: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80',
+                tapasEstrella: ['Boquerones en adobo', 'Pavías de merluza', 'Tortillitas de camarones', 'Caña helada'],
+                tags: ['Olor inconfundible', 'Cazón y adobo', 'Cruzcampo helada', 'Barra pequeña'],
+                descripcion: 'El olor a adobo frito de Blanco Cerrillo perfuma literalmente toda la céntrica calle Tetuán y Velilla. Es un templo diminuto indispensable para tomar un corto de cerveza e impregnarse del auténtico sabor sevillano.',
+                consejo: 'Pide dos tapas de boquerones en adobo y una caña nada más conseguir hueco en la barra.'
+            },
+            {
+                id: 'casa-duarte',
+                nombre: 'Abacería Casa Duarte',
+                zona: 'Triana',
+                tipo: 'Abacerías',
+                precio: '$$',
+                rating: 4.8,
+                direccion: 'Calle San Jacinto, 29 (Triana)',
+                imagen: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80',
+                tapasEstrella: ['Chicharrones de Cádiz', 'Queso con mermelada de higo', 'Conservas selectas', 'Vino fino'],
+                tags: ['Triana pura', 'Vinos andaluces', 'Chicharrones', 'Producto local'],
+                descripcion: 'Una abacería clásica en el corazón de Triana donde comprar chacinas al corte o consumirlas in situ servidas sobre papel de estraza con picos de pan.',
+                consejo: 'Marida un plato de chicharrones fijos con una copa de Manzanilla pasada de Sanlúcar.'
+            },
+            {
+                id: 'terraza-eme',
+                nombre: 'La Terrazas del EME',
+                zona: 'Santa Cruz',
+                tipo: 'Terrazas con Vistas',
+                precio: '$$$',
+                rating: 4.6,
+                direccion: 'Calle Alemanes, 27',
+                imagen: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80',
+                tapasEstrella: ['Cócteles de autor', 'Tabla de quesos artesanales', 'Tartar de atún rojo', 'Croquetas gourmet'],
+                tags: ['Vistas a la Giralda', 'Copas y Cócteles', 'Atardecer', 'Exclusivo'],
+                descripcion: 'Ubicada en la azotea del Hotel EME, ofrece las vistas más impresionantes y cercanas a la Catedral y la Giralda iluminada. Ideal para un picoteo gourmet o una copa al atardecer.',
+                consejo: 'Subir justo antes del anochecer para ver la transición de luces sobre la Giralda.'
+            },
+            {
+                id: 'oviedo-bar',
+                nombre: 'Bar Manuel Oviedo',
+                zona: 'Alameda',
+                tipo: 'Bares Modernos/Gourmet',
+                precio: '$$',
+                rating: 4.7,
+                direccion: 'Plaza de la Encarnación / Alameda',
+                imagen: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
+                tapasEstrella: ['Risotto de setas y foie', 'Tataki de atún', 'Carrillada al oloroso', 'Salmorejo cordobés'],
+                tags: ['Cocina moderna', 'Alameda viva', 'Tapas de autor', 'Terraza amplia'],
+                descripcion: 'Una fusión perfecta entre la cocina tradicional andaluza y toques internacionales contemporáneos. Platos muy cuidados en la zona moderna y alternativa de la Alameda de Hércules.',
+                consejo: 'Prueba la carrillada al vino oloroso con crema de patatas suaves.'
+            },
+            {
+                id: 'sol-6',
+                nombre: 'La Brunilda Tapas',
+                zona: 'El Arenal',
+                tipo: 'Bares Modernos/Gourmet',
+                precio: '$$',
+                rating: 4.9,
+                direccion: 'Calle Galera, 5 (El Arenal)',
+                imagen: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=800&q=80',
+                tapasEstrella: ['Pulpo a la brasa con parmentier', 'Mini hamburguesa de buey', 'Taco de bacalao confitado', 'Tarta de queso'],
+                tags: ['Alta gastronomía', 'Imprescindible', 'Calidad-Precio', 'Reservar/Madrugar'],
+                descripcion: 'Uno de los referentes del gastro-tapeo en Sevilla. Cocina de altísimo nivel en formato tapa a precios muy asequibles. Decoración rústico-chic muy acogedora.',
+                consejo: 'Suelen formarse colas largas. Ve 20 minutos antes de la hora de apertura a mediodía o noche.'
+            },
+            {
+                id: 'cerveceria-salvador',
+                nombre: 'La Bodega de la Alfalfa',
+                zona: 'Santa Cruz',
+                tipo: 'Cervecerías',
+                precio: '$',
+                rating: 4.5,
+                direccion: 'Plaza de la Alfalfa, 4',
+                imagen: 'https://images.unsplash.com/photo-1608270586620-248524c67de9?auto=format&fit=crop&w=800&q=80',
+                tapasEstrella: ['Montadito del piripi', 'Cañas heladas', 'Gambas al ajillo', 'Chocos fritos'],
+                tags: ['Plaza Alfalfa', 'Cruzcampo helada', 'Terraza sol', 'Tapeo desenfadado'],
+                descripcion: 'Bar clásico de plaza con amplia terraza al sol. Excelente para ver pasar a la gente mientras tomas cerveza fresquísima con tapas tradicionales.',
+                consejo: 'Pide el clásico montadito Piripi (lomo, tomate, queso, bacon y mayonesa).'
+            },
+            {
+                id: 'bar-joaquin-marquez',
+                nombre: 'Cervecería El Tremendo',
+                zona: 'Macarena',
+                tipo: 'Cervecerías',
+                precio: '$',
+                rating: 4.9,
+                direccion: 'Calle Previsión, 10 (Santa Marina/Macarena)',
+                imagen: 'https://images.unsplash.com/photo-1538488881038-e252a119ace7?auto=format&fit=crop&w=800&q=80',
+                tapasEstrella: ['Cerveza más fría de Sevilla', 'Altramuces y picos', 'Chacinas', 'Mojama con almendras'],
+                tags: ['Mito sevillano', 'Cerveza helada', 'Solo bebida/aperitivo', 'Barrio auténtico'],
+                descripcion: 'Para muchos sevillanos, el sitio donde mejor se tira la cerveza Cruzcampo de toda la ciudad. No sirven comidas complejas, solo aperitivos secos para acompañar la caña de tiraje perfecto.',
+                consejo: 'Pide un par de cañas con un plato de mojama o altramuces y tómala de pie en la acera.'
+            },
+            {
+                id: 'casa-cuesta',
+                nombre: 'Triana Bar Casa Cuesta',
+                zona: 'Triana',
+                tipo: 'Tapeo Tradicional',
+                precio: '$$',
+                rating: 4.7,
+                direccion: 'Calle Castilla, 1 (Triana)',
+                imagen: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
+                tapasEstrella: ['Rabo de toro', 'Bacalao a la vizcaína', 'Tortilla de camarones', 'Alcachofas con jamón'],
+                tags: ['Triana tradicional', 'Rabo de Toro', 'Solera desde 1925', 'Azulejos'],
+                descripcion: 'Ubicado al inicio de la mítica calle Castilla en Triana. Destaca por sus guisos tradicionales de cocción lenta y su decoración clásica trianera.',
+                consejo: 'No dejes de probar el rabo de toro deshuesado en salsa de vino tinto.'
+            },
+            {
+                id: 'terraza-doña-maria',
+                nombre: 'Terraza Hotel Doña María',
+                zona: 'Santa Cruz',
+                tipo: 'Terrazas con Vistas',
+                precio: '$$$',
+                rating: 4.6,
+                direccion: 'Calle Don Remondo, 19',
+                imagen: 'https://images.unsplash.com/photo-1578474846511-04ba529f0b88?auto=format&fit=crop&w=800&q=80',
+                tapasEstrella: ['Cocktails clásicos', 'Tabla de chacinas ibéricas', 'Snacks variados'],
+                tags: ['Vistas Giralda', 'Piscina/Azotea', 'Romántico', 'Copas nocturnas'],
+                descripcion: 'Pionera en las terrazas de azotea de Sevilla. Ofrece una vista frontal impresionante de la Giralda a una distancia tan cercana que casi parece que puedes tocarla.',
+                consejo: 'Ideal para la primera copa después de cenar de tapeo por Santa Cruz.'
+            }
+        ];
+
+        // CONSTANTES DE FILTROS
+        const ZONAS = ['Todas', 'Santa Cruz', 'Triana', 'El Arenal', 'Alameda', 'Macarena'];
+        const TIPOS = ['Todos', 'Tapeo Tradicional', 'Cervecerías', 'Abacerías', 'Terrazas con Vistas', 'Bares Modernos/Gourmet'];
+
+        // ESTADO DE LA APLICACIÓN
+        let state = {
+            searchQuery: '',
+            selectedZona: 'Todas',
+            selectedTipo: 'Todos',
+            onlyFavorites: false,
+            favorites: JSON.parse(localStorage.getItem('ruta_tapeo_favs') || '[]')
+        };
+
+        // INICIALIZACIÓN
+        document.addEventListener('DOMContentLoaded', () => {
+            renderZonaFilters();
+            renderTipoFilters();
+            updateFavCounter();
+            renderBares();
+        });
+
+        // RENDERIZAR FILTROS ZONA (ESTILO PÍLDORAS/MAPA)
+        function renderZonaFilters() {
+            const container = document.getElementById('zona-filters');
+            container.innerHTML = ZONAS.map(zona => {
+                const isActive = state.selectedZona === zona;
+                const activeClasses = isActive 
+                    ? 'bg-terracota-600 text-white shadow-md scale-105' 
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200';
+                
+                return `
+                    <button onclick="setZona('${zona}')" class="px-5 py-2.5 rounded-2xl text-sm font-semibold whitespace-nowrap transition-all flex items-center space-x-2 ${activeClasses}">
+                        <i class="fa-solid fa-location-dot ${isActive ? 'text-amber-200' : 'text-terracota-500'}"></i>
+                        <span>${zona}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        // RENDERIZAR FILTROS TIPO DE BAR
+        function renderTipoFilters() {
+            const container = document.getElementById('tipo-filters');
+            container.innerHTML = TIPOS.map(tipo => {
+                const isActive = state.selectedTipo === tipo;
+                const activeClasses = isActive 
+                    ? 'bg-azulejo-900 text-white shadow-md' 
+                    : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100';
+                
+                return `
+                    <button onclick="setTipo('${tipo}')" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all ${activeClasses}">
+                        ${tipo}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        // RENDERIZAR TARJETAS DE BARES
+        function renderBares() {
+            const grid = document.getElementById('bares-grid');
+            const emptyState = document.getElementById('empty-state');
+
+            const filtered = BARES_DATA.filter(bar => {
+                // Filtro búsqueda
+                const query = state.searchQuery.toLowerCase();
+                const matchesSearch = !query || 
+                    bar.nombre.toLowerCase().includes(query) ||
+                    bar.zona.toLowerCase().includes(query) ||
+                    bar.tipo.toLowerCase().includes(query) ||
+                    bar.tapasEstrella.some(tapa => tapa.toLowerCase().includes(query)) ||
+                    bar.tags.some(tag => tag.toLowerCase().includes(query));
+
+                // Filtro zona
+                const matchesZona = state.selectedZona === 'Todas' || bar.zona === state.selectedZona;
+
+                // Filtro tipo
+                const matchesTipo = state.selectedTipo === 'Todos' || bar.tipo === state.selectedTipo;
+
+                // Filtro favoritos
+                const matchesFav = !state.onlyFavorites || state.favorites.includes(bar.id);
+
+                return matchesSearch && matchesZona && matchesTipo && matchesFav;
+            });
+
+            // Actualizar contador
+            document.getElementById('counter-bares').innerText = `Mostrando ${filtered.length} ${filtered.length === 1 ? 'bar' : 'bares'}`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            grid.innerHTML = filtered.map(bar => {
+                const isFav = state.favorites.includes(bar.id);
+                
+                return `
+                    <div class="bg-white rounded-3xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group">
+                        
+                        <!-- Imagen con overlays -->
+                        <div class="relative h-52 w-full overflow-hidden bg-slate-100">
+                            <img src="${bar.imagen}" alt="${bar.nombre}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            
+                            <!-- Overlay Gradiente -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+
+                            <!-- Botón Favorito -->
+                            <button onclick="toggleFavorite(event, '${bar.id}')" class="absolute top-3 right-3 w-10 h-10 rounded-full bg-white/90 backdrop-blur-md shadow-md flex items-center justify-center text-rose-500 hover:scale-110 transition-transform">
+                                <i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-heart text-lg"></i>
+                            </button>
+
+                            <!-- Zona Badge -->
+                            <div class="absolute bottom-3 left-4 flex items-center space-x-2">
+                                <span class="px-3 py-1 bg-albero-600/90 text-white font-bold text-xs rounded-full backdrop-blur-sm shadow">
+                                    <i class="fa-solid fa-map-pin mr-1 text-amber-200"></i>${bar.zona}
+                                </span>
+                                <span class="px-2.5 py-1 bg-black/60 text-amber-300 font-bold text-xs rounded-full backdrop-blur-sm">
+                                    ${bar.precio}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Contenido -->
+                        <div class="p-6 flex-grow flex flex-col justify-between space-y-4">
+                            <div>
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="text-xs font-bold text-terracota-600 uppercase tracking-wider">${bar.tipo}</span>
+                                    <div class="flex items-center text-amber-500 text-xs font-bold">
+                                        <i class="fa-solid fa-star mr-1"></i>
+                                        <span>${bar.rating}</span>
+                                    </div>
+                                </div>
+                                
+                                <h3 class="font-serif text-xl font-bold text-azulejo-900 group-hover:text-terracota-600 transition-colors">${bar.nombre}</h3>
+                                <p class="text-xs text-slate-500 mt-1 flex items-center">
+                                    <i class="fa-solid fa-location-dot mr-1 text-slate-400"></i>${bar.direccion}
+                                </p>
+                            </div>
+
+                            <!-- Tapas Destacadas Preview -->
+                            <div class="bg-amber-50/60 rounded-2xl p-3 border border-amber-100/80">
+                                <span class="text-[11px] font-bold text-amber-900 uppercase tracking-wider block mb-1">
+                                    <i class="fa-solid fa-fire text-terracota-500 mr-1"></i>Tapa estrella:
+                                </span>
+                                <p class="text-xs font-medium text-slate-700 line-clamp-1">
+                                    ${bar.tapasEstrella[0]} ${bar.tapasEstrella[1] ? '• ' + bar.tapasEstrella[1] : ''}
+                                </p>
+                            </div>
+
+                            <!-- Badges / Tags -->
+                            <div class="flex flex-wrap gap-1.5">
+                                ${bar.tags.slice(0, 3).map(tag => `
+                                    <span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded-md text-[11px] font-medium">
+                                        ${tag}
+                                    </span>
+                                `).join('')}
+                            </div>
+
+                            <!-- Botón Abrir Modal -->
+                            <button onclick="openModal('${bar.id}')" class="w-full py-3 rounded-2xl bg-slate-100 hover:bg-azulejo-900 hover:text-white text-azulejo-900 font-bold text-sm transition-all duration-200 flex items-center justify-center space-x-2">
+                                <span>Ver Recomendaciones</span>
+                                <i class="fa-solid fa-arrow-right text-xs"></i>
+                            </button>
+                        </div>
+
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // CONTROLADORES DE FILTROS Y BÚSQUEDA
+        function setZona(zona) {
+            state.selectedZona = zona;
+            renderZonaFilters();
+            renderBares();
+        }
+
+        function setTipo(tipo) {
+            state.selectedTipo = tipo;
+            renderTipoFilters();
+            renderBares();
+        }
+
+        function filterBares() {
+            const input = document.getElementById('search-input');
+            const clearBtn = document.getElementById('clear-search-btn');
+            state.searchQuery = input.value.trim();
+
+            if (state.searchQuery.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+
+            renderBares();
+        }
+
+        function clearSearch() {
+            const input = document.getElementById('search-input');
+            input.value = '';
+            state.searchQuery = '';
+            document.getElementById('clear-search-btn').classList.add('hidden');
+            renderBares();
+        }
+
+        function toggleFilterFavorites() {
+            state.onlyFavorites = !state.onlyFavorites;
+            const btn = document.getElementById('btn-favoritos');
+            
+            if (state.onlyFavorites) {
+                btn.classList.add('bg-rose-500', 'text-white', 'border-rose-600');
+                btn.classList.remove('bg-rose-50', 'text-rose-700', 'border-rose-200');
+            } else {
+                btn.classList.remove('bg-rose-500', 'text-white', 'border-rose-600');
+                btn.classList.add('bg-rose-50', 'text-rose-700', 'border-rose-200');
+            }
+
+            renderBares();
+        }
+
+        function resetFilters() {
+            state.searchQuery = '';
+            state.selectedZona = 'Todas';
+            state.selectedTipo = 'Todos';
+            state.onlyFavorites = false;
+
+            document.getElementById('search-input').value = '';
+            document.getElementById('clear-search-btn').classList.add('hidden');
+
+            const favBtn = document.getElementById('btn-favoritos');
+            favBtn.classList.remove('bg-rose-500', 'text-white', 'border-rose-600');
+            favBtn.classList.add('bg-rose-50', 'text-rose-700', 'border-rose-200');
+
+            renderZonaFilters();
+            renderTipoFilters();
+            renderBares();
+        }
+
+        // MANEJO DE FAVORITOS (LOCALSTORAGE)
+        function toggleFavorite(event, barId) {
+            event.stopPropagation();
+            const index = state.favorites.indexOf(barId);
+            
+            if (index > -1) {
+                state.favorites.splice(index, 1);
+            } else {
+                state.favorites.push(barId);
+            }
+
+            localStorage.setItem('ruta_tapeo_favs', JSON.stringify(state.favorites));
+            updateFavCounter();
+            renderBares();
+
+            // Actualizar botón modal si está abierto
+            const modalFavBtn = document.getElementById('modal-fav-btn');
+            if (modalFavBtn && !document.getElementById('bar-modal').classList.contains('hidden')) {
+                updateModalFavButton(barId);
+            }
+        }
+
+        function updateFavCounter() {
+            document.getElementById('fav-counter').innerText = state.favorites.length;
+        }
+
+        // MANEJO DEL MODAL DETALLE
+        function openModal(barId) {
+            const bar = BARES_DATA.find(b => b.id === barId);
+            if (!bar) return;
+
+            document.getElementById('modal-img').src = bar.imagen;
+            document.getElementById('modal-title').innerText = bar.nombre;
+            document.getElementById('modal-zona').innerText = bar.zona;
+            document.getElementById('modal-tipo').innerText = bar.tipo;
+            document.getElementById('modal-direccion').innerText = bar.direccion;
+            document.getElementById('modal-precio').innerText = `Rango: ${bar.precio}`;
+            document.getElementById('modal-descripcion').innerText = bar.descripcion;
+            document.getElementById('modal-consejo').innerText = `"${bar.consejo}"`;
+
+            // Rating Stars
+            const ratingContainer = document.getElementById('modal-rating');
+            ratingContainer.innerHTML = `
+                <i class="fa-solid fa-star"></i>
+                <span class="ml-1.5 font-bold text-slate-800">${bar.rating} / 5</span>
+            `;
+
+            // Tapas
+            const tapasContainer = document.getElementById('modal-tapas');
+            tapasContainer.innerHTML = bar.tapasEstrella.map(tapa => `
+                <li class="flex items-center space-x-2 bg-white p-2.5 rounded-xl border border-amber-200/60 shadow-sm">
+                    <i class="fa-solid fa-circle-check text-albero-600 text-base"></i>
+                    <span class="font-medium text-slate-800">${tapa}</span>
+                </li>
+            `).join('');
+
+            // Tags
+            const tagsContainer = document.getElementById('modal-tags');
+            tagsContainer.innerHTML = bar.tags.map(tag => `
+                <span class="px-3 py-1 bg-slate-100 text-slate-700 font-semibold rounded-full text-xs">
+                    # ${tag}
+                </span>
+            `).join('');
+
+            // Botón Fav del Modal
+            const modalFavBtn = document.getElementById('modal-fav-btn');
+            modalFavBtn.setAttribute('onclick', `toggleFavorite(event, '${bar.id}')`);
+            updateModalFavButton(bar.id);
+
+            // Mostrar modal
+            document.getElementById('bar-modal').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function updateModalFavButton(barId) {
+            const isFav = state.favorites.includes(barId);
+            const btn = document.getElementById('modal-fav-btn');
+            if (isFav) {
+                btn.innerHTML = `<i class="fa-solid fa-heart mr-2 text-rose-500"></i>Guardado en Favoritos`;
+                btn.classList.add('bg-rose-50', 'border-rose-400', 'text-rose-700');
+            } else {
+                btn.innerHTML = `<i class="fa-regular fa-heart mr-2"></i>Guardar en Favoritos`;
+                btn.classList.remove('bg-rose-50', 'border-rose-400', 'text-rose-700');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('bar-modal').classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        // Cerrar modal al hacer clic fuera
+        document.getElementById('bar-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'bar-modal') {
+                closeModal();
+            }
+        });
+
+        // Cerrar modal con la tecla ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
